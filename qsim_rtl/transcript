@@ -1,0 +1,122 @@
+# do runsim_access.do
+# 
+# if {[file exists work]} {
+#     vdel -lib work -all
+# }
+# 
+# vlib work
+# vmap work work
+# Model Technology ModelSim DE vmap 2024.2 Lib Mapping Utility 2024.05 May 20 2024
+# vmap work work 
+# Modifying modelsim.ini
+# 
+# vlog -sv +incdir+../../rtl/riscv tb_access_control.v
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 16:22:42 on Apr 30,2026
+# vlog -reportprogress 300 -sv "+incdir+../../rtl/riscv" tb_access_control.v 
+# -- Compiling module ALU
+# -- Compiling module RegFile
+# -- Compiling module ImmediateExtractor
+# -- Compiling module Encoder_4
+# -- Compiling module Encoder_8
+# -- Compiling module Encoder_16
+# -- Compiling module CPU
+# -- Compiling module ROM
+# -- Compiling module RAM
+# -- Compiling module SecureBoot
+# -- Compiling module AccessControl
+# -- Compiling module SecureSoCTop
+# -- Compiling module tb_access_control
+# 
+# Top level modules:
+# 	tb_access_control
+# End time: 16:22:42 on Apr 30,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# 
+# vsim -voptargs=+acc work.tb_access_control
+# vsim -voptargs="+acc" work.tb_access_control 
+# Start time: 16:22:42 on Apr 30,2026
+# //  ModelSim DE 2024.2 May 20 2024 Linux 4.18.0-553.120.1.el8_10.x86_64
+# //
+# // Unpublished work. Copyright 2024 Siemens
+# //
+# // This material contains trade secrets or otherwise confidential information
+# // owned by Siemens Industry Software Inc. or its affiliates (collectively,
+# // "SISW"), or its licensors. Access to and use of this information is strictly
+# // limited as set forth in the Customer's applicable agreements with SISW.
+# //
+# // This material may not be copied, distributed, or otherwise disclosed outside
+# // of the Customer's facilities without the express written permission of SISW,
+# // and may not be used in any way not expressly authorized by SISW.
+# //
+# Loading sv_std.std
+# Loading work.tb_access_control
+# Loading work.SecureSoCTop
+# Loading work.CPU
+# Loading work.Encoder_8
+# Loading work.ImmediateExtractor
+# Loading work.Encoder_16
+# Loading work.Encoder_4
+# Loading work.ALU
+# Loading work.RegFile
+# Loading work.SecureBoot
+# Loading work.AccessControl
+# Loading work.ROM
+# Loading work.RAM
+# 
+# add wave -r sim:/tb_access_control/*
+# 
+# run -all
+# ==============================================
+#  Access Control Full-System Test Started
+# ==============================================
+# 
+# After secure boot:
+# BOOT_DONE      = 1
+# BOOT_FAIL      = 0
+# SECURITY_FAULT = 0
+# CPU PC         = 80
+# RAM[1]         = 0000000000000000
+# 
+# Restarting CPU from PC=0 after secure boot for access-control test.
+# [275000] SECURITY_FAULT asserted. CPU_RAM_ADDR=1 CPU_RAM_WE=1 RAM_WRITE_ALLOWED=0
+# [275000] Protected write attempt detected. addr=1 data=0000000000000001 allowed=0 fault=1
+# [315000] SECURITY_FAULT asserted. CPU_RAM_ADDR=1 CPU_RAM_WE=1 RAM_WRITE_ALLOWED=0
+# [315000] Protected write attempt detected. addr=1 data=0000000000000001 allowed=0 fault=1
+# [385000] SECURITY_FAULT asserted. CPU_RAM_ADDR=1 CPU_RAM_WE=1 RAM_WRITE_ALLOWED=0
+# [385000] Protected write attempt detected. addr=1 data=0000000000000001 allowed=0 fault=1
+# [455000] SECURITY_FAULT asserted. CPU_RAM_ADDR=1 CPU_RAM_WE=1 RAM_WRITE_ALLOWED=0
+# [455000] Protected write attempt detected. addr=1 data=0000000000000001 allowed=0 fault=1
+# [525000] SECURITY_FAULT asserted. CPU_RAM_ADDR=1 CPU_RAM_WE=1 RAM_WRITE_ALLOWED=0
+# [525000] Protected write attempt detected. addr=1 data=0000000000000001 allowed=0 fault=1
+# [595000] SECURITY_FAULT asserted. CPU_RAM_ADDR=1 CPU_RAM_WE=1 RAM_WRITE_ALLOWED=0
+# [595000] Protected write attempt detected. addr=1 data=0000000000000001 allowed=0 fault=1
+# [665000] SECURITY_FAULT asserted. CPU_RAM_ADDR=1 CPU_RAM_WE=1 RAM_WRITE_ALLOWED=0
+# [665000] Protected write attempt detected. addr=1 data=0000000000000001 allowed=0 fault=1
+# 
+# After CPU runs protected-write program:
+# BOOT_DONE                  = 1
+# BOOT_FAIL                  = 0
+# Current SECURITY_FAULT      = 0
+# Seen SECURITY_FAULT         = 1
+# Seen protected write attempt= 1
+# CPU PC                      = 28
+# CPU RAM_ADDR                = 1
+# CPU RAM_WE                  = 0
+# RAM_WRITE_ALLOWED           = 0
+# RAM[1]                      = 0000000000000000
+# PASS: CPU attempted protected write.
+# PASS: SECURITY_FAULT was asserted.
+# PASS: RAM[1] remains unchanged.
+# 
+# ==============================================
+# ALL ACCESS CONTROL FULL-SYSTEM TESTS PASSED.
+# ==============================================
+# ** Note: $finish    : tb_access_control.v(182)
+#    Time: 700 ns  Iteration: 0  Instance: /tb_access_control
+# 1
+# Break in Module tb_access_control at tb_access_control.v line 182
+# 
+# quit -f
+# End time: 16:22:50 on Apr 30,2026, Elapsed time: 0:00:08
+# Errors: 0, Warnings: 0
