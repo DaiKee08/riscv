@@ -1,0 +1,188 @@
+# do runsim_total_threat_model.do
+# 
+# if {[file exists work]} {
+#     vdel -lib work -all
+# }
+# 
+# vlib work
+# vmap work work
+# Model Technology ModelSim DE vmap 2024.2 Lib Mapping Utility 2024.05 May 20 2024
+# vmap work work 
+# Modifying modelsim.ini
+# 
+# vlog -sv +incdir+../../rtl/riscv tb_total_threat_model.v
+# Model Technology ModelSim DE vlog 2024.2 Compiler 2024.05 May 20 2024
+# Start time: 20:31:02 on May 10,2026
+# vlog -sv "+incdir+../../rtl/riscv" tb_total_threat_model.v 
+# -- Compiling module ALU
+# -- Compiling module RegFile
+# -- Compiling module ImmediateExtractor
+# -- Compiling module Encoder_4
+# -- Compiling module Encoder_8
+# -- Compiling module Encoder_16
+# -- Compiling module BranchPredictor
+# -- Compiling module CPU
+# -- Compiling module ROM
+# -- Compiling module RAM
+# -- Compiling module SecureBoot
+# -- Compiling module AccessControl
+# -- Compiling module SimpleTLB
+# -- Compiling module SecureSoCTop
+# -- Compiling module tb_total_threat_model
+# 
+# Top level modules:
+# 	tb_total_threat_model
+# End time: 20:31:02 on May 10,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# 
+# vsim -voptargs=+acc work.tb_total_threat_model
+# vsim -voptargs="+acc" work.tb_total_threat_model 
+# Start time: 20:31:02 on May 10,2026
+# //  ModelSim DE 2024.2 May 20 2024 Linux 4.18.0-553.123.1.el8_10.x86_64
+# //
+# // Unpublished work. Copyright 2024 Siemens
+# //
+# // This material contains trade secrets or otherwise confidential information
+# // owned by Siemens Industry Software Inc. or its affiliates (collectively,
+# // "SISW"), or its licensors. Access to and use of this information is strictly
+# // limited as set forth in the Customer's applicable agreements with SISW.
+# //
+# // This material may not be copied, distributed, or otherwise disclosed outside
+# // of the Customer's facilities without the express written permission of SISW,
+# // and may not be used in any way not expressly authorized by SISW.
+# //
+# Loading sv_std.std
+# Loading work.tb_total_threat_model
+# Loading work.SecureSoCTop
+# Loading work.CPU
+# Loading work.BranchPredictor
+# Loading work.Encoder_8
+# Loading work.ImmediateExtractor
+# Loading work.Encoder_16
+# Loading work.Encoder_4
+# Loading work.ALU
+# Loading work.RegFile
+# Loading work.SecureBoot
+# Loading work.SimpleTLB
+# Loading work.AccessControl
+# Loading work.ROM
+# Loading work.RAM
+# 
+# add wave -r sim:/tb_total_threat_model/*
+# 
+# run -all
+# ==============================================
+#  Total Full-System Threat Model Test Started
+# ==============================================
+# [1000] DUT B ROM tampered: memory[1] = 00200093
+# [1000] DUT C TLB modified: VPN 0 -> PPN 0 for access-control attack
+# 
+# --------------- Secure Boot Results ---------------
+# DUT A normal:  BOOT_DONE=1 BOOT_FAIL=0 SECURITY_FAULT=0
+# DUT B tamper:  BOOT_DONE=0 BOOT_FAIL=1 SECURITY_FAULT=0
+# Boot-window violation seen on DUT A = 0
+# PASS: DUT A secure boot passed.
+# PASS: DUT B tampered ROM failed secure boot.
+# PASS: Boot-window instruction gate held CPU instruction as NOP.
+# 
+# --------------- Normal DUT: VA Translation + BP ---------------
+# Restarting DUT A CPU from PC=0 after secure boot.
+# [325000] NORMAL: CPU store VA=1 translated PA=17 write_allowed=1
+# [325000] NORMAL: physical RAM write at PA=17 data=0000000000000001
+# [365000] NORMAL: CPU store VA=1 translated PA=17 write_allowed=1
+# [365000] NORMAL: physical RAM write at PA=17 data=0000000000000002
+# [365000] BP update: PC=32 actual_taken=1 pred_taken=0 pred_pc=36 actual_target=20 mispredict=1
+# [365000] BP mispredict: correct_next_pc=20
+# [435000] NORMAL: CPU store VA=1 translated PA=17 write_allowed=1
+# [435000] NORMAL: physical RAM write at PA=17 data=0000000000000003
+# [435000] BP update: PC=32 actual_taken=1 pred_taken=1 pred_pc=20 actual_target=20 mispredict=0
+# [485000] NORMAL: CPU store VA=1 translated PA=17 write_allowed=1
+# [485000] NORMAL: physical RAM write at PA=17 data=0000000000000004
+# [485000] BP update: PC=32 actual_taken=0 pred_taken=1 pred_pc=20 actual_target=20 mispredict=1
+# [485000] BP mispredict: correct_next_pc=36
+# [525000] NORMAL: unexpected translation fault. VA=55 PA=0 tlb_fault=1 perm_fault=0
+# [535000] NORMAL: unexpected translation fault. VA=55 PA=0 tlb_fault=1 perm_fault=0
+# [545000] NORMAL: unexpected translation fault. VA=56 PA=0 tlb_fault=1 perm_fault=0
+# 
+# DUT A after program execution:
+# seen_va1_store              = 1
+# seen_pa17_write             = 1
+# seen_translation_fault       = 1
+# RAM[1]                      = 0000000000000000
+# RAM[17]                     = 0000000000000004
+# branch_update_count         = 3
+# mispredict_count            = 2
+# taken_update_count          = 2
+# not_taken_update_count      = 1
+# PASS: DUT A issued store to virtual address VA=1.
+# PASS: DUT A wrote translated physical address PA=17.
+# PASS: DUT A RAM[1] remains unchanged.
+# PASS: DUT A RAM[17] modified by translated write.
+# PASS: DUT A saw no translation fault for mapped writable VA=1.
+# PASS: Branch predictor received updates.
+# PASS: Branch misprediction observed.
+# PASS: Taken branch update observed.
+# 
+# --------------- Access-Control Attack DUT ---------------
+# Restarting DUT C CPU from PC=0 after secure boot.
+# PASS: DUT C secure boot passed.
+# [2125000] ACCESS ATTACK: protected physical write attempt. VA=1 PA=1 allowed=0 fault=1
+# [2125000] ACCESS ATTACK: SECURITY_FAULT asserted. VA=1 PA=1
+# [2165000] ACCESS ATTACK: protected physical write attempt. VA=1 PA=1 allowed=0 fault=1
+# [2165000] ACCESS ATTACK: SECURITY_FAULT asserted. VA=1 PA=1
+# [2235000] ACCESS ATTACK: protected physical write attempt. VA=1 PA=1 allowed=0 fault=1
+# [2235000] ACCESS ATTACK: SECURITY_FAULT asserted. VA=1 PA=1
+# [2285000] ACCESS ATTACK: protected physical write attempt. VA=1 PA=1 allowed=0 fault=1
+# [2285000] ACCESS ATTACK: SECURITY_FAULT asserted. VA=1 PA=1
+# [2335000] ACCESS ATTACK: protected physical write attempt. VA=1 PA=1 allowed=0 fault=1
+# [2335000] ACCESS ATTACK: SECURITY_FAULT asserted. VA=1 PA=1
+# [2385000] ACCESS ATTACK: protected physical write attempt. VA=1 PA=1 allowed=0 fault=1
+# [2385000] ACCESS ATTACK: SECURITY_FAULT asserted. VA=1 PA=1
+# [2435000] ACCESS ATTACK: protected physical write attempt. VA=1 PA=1 allowed=0 fault=1
+# [2435000] ACCESS ATTACK: SECURITY_FAULT asserted. VA=1 PA=1
+# [2485000] ACCESS ATTACK: protected physical write attempt. VA=1 PA=1 allowed=0 fault=1
+# [2485000] ACCESS ATTACK: SECURITY_FAULT asserted. VA=1 PA=1
+# [2535000] ACCESS ATTACK: protected physical write attempt. VA=1 PA=1 allowed=0 fault=1
+# [2535000] ACCESS ATTACK: SECURITY_FAULT asserted. VA=1 PA=1
+# [2585000] ACCESS ATTACK: protected physical write attempt. VA=1 PA=1 allowed=0 fault=1
+# [2585000] ACCESS ATTACK: SECURITY_FAULT asserted. VA=1 PA=1
+# [2635000] ACCESS ATTACK: protected physical write attempt. VA=1 PA=1 allowed=0 fault=1
+# [2635000] ACCESS ATTACK: SECURITY_FAULT asserted. VA=1 PA=1
+# [2685000] ACCESS ATTACK: protected physical write attempt. VA=1 PA=1 allowed=0 fault=1
+# [2685000] ACCESS ATTACK: SECURITY_FAULT asserted. VA=1 PA=1
+# [2735000] ACCESS ATTACK: protected physical write attempt. VA=1 PA=1 allowed=0 fault=1
+# [2735000] ACCESS ATTACK: SECURITY_FAULT asserted. VA=1 PA=1
+# [2785000] ACCESS ATTACK: protected physical write attempt. VA=1 PA=1 allowed=0 fault=1
+# [2785000] ACCESS ATTACK: SECURITY_FAULT asserted. VA=1 PA=1
+# [2835000] ACCESS ATTACK: protected physical write attempt. VA=1 PA=1 allowed=0 fault=1
+# [2835000] ACCESS ATTACK: SECURITY_FAULT asserted. VA=1 PA=1
+# [2885000] ACCESS ATTACK: protected physical write attempt. VA=1 PA=1 allowed=0 fault=1
+# [2885000] ACCESS ATTACK: SECURITY_FAULT asserted. VA=1 PA=1
+# [2935000] ACCESS ATTACK: protected physical write attempt. VA=1 PA=1 allowed=0 fault=1
+# [2935000] ACCESS ATTACK: SECURITY_FAULT asserted. VA=1 PA=1
+# [2985000] ACCESS ATTACK: protected physical write attempt. VA=1 PA=1 allowed=0 fault=1
+# [2985000] ACCESS ATTACK: SECURITY_FAULT asserted. VA=1 PA=1
+# [3035000] NORMAL: CPU store VA=1 translated PA=17 write_allowed=1
+# [3035000] NORMAL: physical RAM write at PA=17 data=0000000000000001
+# [3035000] ACCESS ATTACK: protected physical write attempt. VA=1 PA=1 allowed=0 fault=1
+# [3035000] ACCESS ATTACK: SECURITY_FAULT asserted. VA=1 PA=1
+# 
+# DUT C after protected-write attack:
+# seen_protected_pa_attempt   = 1
+# seen_access_fault           = 1
+# Current SECURITY_FAULT_C    = 0
+# RAM_WRITE_ALLOWED           = 0
+# VA                          = 1
+# PA                          = 1
+# RAM[1]                      = 0000000000000000
+# PASS: DUT C attempted protected physical write.
+# PASS: DUT C asserted security fault for protected write.
+# PASS: DUT C RAM[1] remains unchanged; write was blocked.
+# 
+# ==============================================
+# ALL TOTAL FULL-SYSTEM THREAT MODEL TESTS PASSED.
+# ==============================================
+# ** Note: $finish    : tb_total_threat_model.v(558)
+#    Time: 3050 ns  Iteration: 0  Instance: /tb_total_threat_model
+# End time: 20:31:02 on May 10,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
